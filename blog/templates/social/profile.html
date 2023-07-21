@@ -1,0 +1,65 @@
+{% extends 'social/feed.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- Contenedor principal del perfil -->
+<div class="profile-container">
+
+    <!-- Imagen de perfil -->
+    <img src="{{ user.profile.image.url }}" alt="Perfil" class="profile-image">
+    {% if user.username != request.user.username %}
+    
+    {% else %}
+    <p><a href="{% url 'edit_profile' %}">Editar foto de perfil</a></p>
+    {% endif %}
+
+    <!-- Nombre de usuario -->
+    {% if request.user.follow %}
+    <h2 class="profile-username" style="color: rgb(253, 0, 0);">@{{ user.username }}</h2>
+    {% else %}
+    <h2 class="profile-username" style="color: white;">@{{ user.username }}</h2>
+    {% endif %}
+    
+
+    <!-- Botón de seguir -->
+
+    {% if request.user.is_authenticated %}
+     {% if user.username != request.user.username %}
+        {% if user not in request.user.profile.following %}
+        <button class="follow-button"><a class="" href="{% url 'follow' user %}">Seguir</a></button>
+        {% else %}
+        <button class="follow-button"><a class="" href="{% url 'unfollow' user %}">Dejar de seguir</a></button>
+        {% endif %}
+     {% endif %}
+    {% endif %}
+
+
+    <!-- Sección de estadísticas -->
+    <div class="stats-container">
+        <div class="stats-item">
+            <h4>Posts</h4>
+            <p>{{ user.posts.count }}</p>
+        </div>
+        <div class="stats-item">
+            <h4>Followers</h4>
+            <p>{{ user.profile.followers.count }}</p>
+        </div>
+        <div class="stats-item">
+            <h4>Following</h4>
+            <p>{{ user.profile.following.count }}</p>
+        </div>
+    </div>
+    <hr style="background-color: rgb(0, 0, 0);">
+   
+    <!-- Aquí mostraremos el contenido del bloque 'content' -->
+    
+ 
+        {{ block.super }}
+
+
+</div>
+
+
+
+{% endblock %}

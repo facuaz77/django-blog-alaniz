@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block content %}
+    {% load static %}
+    <div class="feed-container">
+        {% for post in posts %}
+            <article class="post-container">
+                <div class="post-header">
+                    <div class="profile-container-post">
+                        <img src="{{ post.user.profile.image.url }}" alt="profile-image" class="profile-image-post">
+                        <div class="user-info">
+                            <h2 class="username">
+                                <a href="{% url 'profile' post.user.username %}">@{{ post.user.username }}</a>
+                            </h2>
+                        </div>
+                    </div>
+                    <time class="post-timestamp" data-time="#">{{ post.timestamp|naturaltime }}</time>
+                </div>
+                <div class="post-content">
+                    <div class="post-text">{{ post.content }}</div>
+                    {% if post.image %}
+                        <img class="post-image" src="{{ post.image.url }}" alt="post-image">
+                        <hr>
+                    {% endif %}
+                    {% if post.audio %}
+                        <div class="audio-player">
+                            <audio controls>
+                                <source src="{{ post.audio.url }}" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                        <hr>
+                    {% endif %}
+                    {% if post.video %}
+                        <div class="post-container">
+                            <video controls class="post-video">
+                                <source src="{{ post.video.url }}" type="video/mp4">
+                                Your browser does not support the video element.
+                            </video>
+                        </div>
+                        <hr>
+                    {% endif %}
+                </div>
+                {% if post.user == request.user or request.user.is_superuser %}
+                    <div class="post-actions">
+                        <a href="{% url 'update_post' post.id %}" class="post-button">Editar</a>
+                        <form action="{% url 'delete_post' post.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="post-button">Eliminar</button>
+                        </form>
+                    </div>
+                {% endif %}
+            </article>
+        {% endfor %}
+    </div>
+{% endblock %}
