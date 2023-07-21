@@ -4,7 +4,14 @@
 {% block content %}
     {% load static %}
     <div class="feed-container">
+        {% if user.is_authenticated %}
+        
+        {% else %}
+        <h1 style="margin-top: 5px; color:white">Registrate para compartir tus posts!</h1>
+        {% endif %}
         {% for post in posts %}
+
+        
             <article class="post-container">
                 <div class="post-header">
                     <div class="profile-container-post">
