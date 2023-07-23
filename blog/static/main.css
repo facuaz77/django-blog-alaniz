@@ -205,11 +205,9 @@ hr {
 }
 
 .profile-image-post {
-    width: 50px;
-    height: auto;
+    width: 53px;
+    height: 55px;
     border-radius: 50%;
-    object-fit: cover;
-    margin-right: 10px;
 }
 
 .user-info {
